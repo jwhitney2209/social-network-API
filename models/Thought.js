@@ -15,7 +15,7 @@ const ReactionSchema = new Schema(
     },
     username: {
       type: String,
-      required: 'Please provide a username!'
+      required: 'Please enter a username!'
     },
     createdAt: {
       type: Date,
@@ -38,10 +38,10 @@ const ThoughtSchema = new Schema(
       default: Date.now,
       get: createdAtVal => dateFormat(createdAtVal)
     },
-    // username:
-    // {
-    //   TODO: // setup this schema
-    // },
+    username: {
+      type: String,
+      required: 'Please enter a username!'
+    },
     reactions: [ReactionSchema]
   },
   {
