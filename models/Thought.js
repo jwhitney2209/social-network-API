@@ -38,10 +38,10 @@ const ThoughtSchema = new Schema(
       default: Date.now,
       get: createdAtVal => dateFormat(createdAtVal)
     },
-    username:
-    {
-      TODO: // setup this schema
-    },
+    // username:
+    // {
+    //   TODO: // setup this schema
+    // },
     reactions: [ReactionSchema]
   },
   {
