@@ -35,10 +35,22 @@ const thoughtController = {
         { new: true }
       ) // write then/catch
     })
+    .then((dbThoughtData) => {
+      if (!dbThoughtData) {
+        res.status(404).json({ message: 'No thought found with this id!' });
+        return;
+      }
+      res.json(dbThoughtData);
+    })
+    .catch((err) => res.json(err));
   },
+  //update thought
   updateThought() {},
+  // delete thought by id
   deleteThought() {},
+  // add reaction to thought
   addReaction() {},
+  // delete reaction to thought by id
   deleteReaction() {}
 };
 
