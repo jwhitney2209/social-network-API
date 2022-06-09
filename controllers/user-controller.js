@@ -46,15 +46,35 @@ const userController = {
   // delete one user by id use $pull to remove associated thoughts
   deleteUser({ params }, res) {
     User.findOneAndDelete({ _id: params.id })
-      .then(dbUserData => res.json(dbUserData))
+      .then(dbUserData => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with that id!' });
+          return;
+        }
+      // remove user from friends list
+        User.updateMany(
+          { _id: { $in: dbUserData.friends } },
+          { $pull: { friends: params.id } }
+        )
+        .then(() => {
+          // remove users thoughts
+          Thought.deleteMany({ username: dbUserData.username })
+          .then(() => {
+            res.json({ message: 'Successfully deleted user' });
+          })
+          .catch(err => res.json(err));
+        })
+        .catch(err => res.json(err));
+      })
       .catch(err => res.json(err));
   },
 
   // add friend to friends list
   addFriend({ params }, res) {
+    // add friend to user's friends list
     User.findOneAndUpdate(
       { _id: params.id },
-      { $push: { friends: params.friendId } },
+      { $addToSet: { friends: params.friendId } },
       { new: true }
       )
       .populate({path: 'friends', select: ('-__v')})
@@ -64,9 +84,22 @@ const userController = {
           res.status(404).json({ message: 'No user found with that id!' });
           return;
         }
-        res.json(dbUserData);
+        // add user to friend's friends list
+        User.findOneAndUpdate(
+          { _id: params.friendId },
+          { $addToSet: { friends: params.userId } },
+          { new: true, runValidators: true }
+        )
+        .then(dbUserData2 => {
+          if (!dbUserData2) {
+            res.status(404).json({ message: 'No user found with this id!' });
+            return;
+          }
+          res.json(dbUserData);
+        }) 
+        .catch(err => res.json(err));
       })
-      .catch((err) => res.json(err));
+      .catch(err => res.json(err));
   },
 
   // remove friend from friends list
