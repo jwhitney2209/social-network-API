@@ -75,7 +75,7 @@ const userController = {
     User.findOneAndUpdate(
       { _id: params.id },
       { $addToSet: { friends: params.friendId } },
-      { new: true }
+      { new: true, runValidators: true }
       )
       .populate({path: 'friends', select: ('-__v')})
       .select('-__v')
