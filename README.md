@@ -3,7 +3,7 @@
 
 ![badge](https://img.shields.io/badge/License-Open-brightgreen)
 
-![Walkthrough video(https://img.youtube.com/vi/afnBV60BuB8/default.jpg)](https://youtu.be/afnBV60BuB8)
+[![Walkthrough video](https://img.youtube.com/vi/afnBV60BuB8/default.jpg)](https://youtu.be/afnBV60BuB8)
 
 ## Description
 An API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list.
